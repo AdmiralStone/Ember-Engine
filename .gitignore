@@ -1,0 +1,79 @@
+# Build directories
+/build
+/CMakeFiles
+/CMakeCache.txt
+/Makefile
+/*.cmake
+/*.cbp
+/*.workspace
+/*.depend
+/*.layout
+/.vscode/
+
+# Compiled binary files
+/*.o
+/*.obj
+/*.exe
+/*.dll
+/*.lib
+/*.so
+/*.dylib
+/*.a
+/*.out
+
+# Generated files
+/sfml-app
+
+# IDE specific files
+.idea/
+*.swp
+*.user
+*.ncb
+*.suo
+*.mode1v3
+*.mode2v3
+*.poshtm
+*.dat
+*.dep
+*.dot
+*.d
+*.dd
+*.pdd
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# SFML config
+*.ini
+*.cfg
+
+# MacOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
