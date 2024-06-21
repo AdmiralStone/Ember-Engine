@@ -3,12 +3,12 @@
 Ember Engine is a simple, lightweight 2D game engine built with C++ and SFML. This project is a foundation for developing 2D games, with plans to add 3D support in the future.
 
 ## Table of Contents
-[Motivation](#motivation)
-[Features](#features)
-[Installation](#installation)
-[Usage](#usage)
-[License](#licence)
-[Acknowledgements](#acknowledgements)
+-[Motivation](#motivation)
+-[Features](#features)
+-[Installation](#installation)
+-[Usage](#usage)
+-[License](#license)
+-[Acknowledgements](#acknowledgements)
 
 ## Motivation
 This project is a learning experience for me. I am creating Ember to deepen my understanding of how game engines work, improve my C++ skills, and explore the intricacies of 2D and eventually 3D game development. Through this project I am to build a comprehensive and modular game engine from scratch, learning and implementing various components step by step.
