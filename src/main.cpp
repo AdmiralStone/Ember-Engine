@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Input.hpp"
 
 int main(){
     // Create the main window
@@ -34,16 +35,21 @@ int main(){
 
     /* Development Code END*/
 
+    ember::Input input;
+
     // Start the game loop
     while(window.isOpen()){
         // Process Event
         sf::Event event;
         while(window.pollEvent(event)){
+            //Update the input event
+            input.update(event);
+
             // Close window : exit
             if(event.type == sf::Event::Closed) window.close();
 
             // Close window when Escape key is pressed
-            if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)window.close();
+            if(input.isKeyPressed(sf::Keyboard::Escape))window.close();
         }
 
         // Get the elapsed time
@@ -51,7 +57,20 @@ int main(){
 
         // Move the sprite
         float moveDistance = spriteSpeed * deltaTime.asSeconds();
-        sprite.move(moveDistance,0); //MOve sprite to the right 
+        if(input.isKeyPressed(sf::Keyboard::Right)){
+            sprite.move(moveDistance,0); // Move sprite right
+        }
+        if(input.isKeyPressed(sf::Keyboard::Left)){
+            sprite.move(-moveDistance,0); // Move sprite left
+        }
+        if(input.isKeyPressed(sf::Keyboard::Up)){
+            sprite.move(0,-moveDistance); // Move sprite up
+        }
+        if(input.isKeyPressed(sf::Keyboard::Down)){
+            sprite.move(0,moveDistance); // Move sprite down
+        }
+
+        
 
         // Clear screen
         window.clear(sf::Color::White);
