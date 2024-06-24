@@ -19,7 +19,7 @@ This project is a learning experience for me. I am creating Ember to deepen my u
 - [x] Simple shape rendering
 - [x] Texture loading and rendering
 - [x] Game loop and time management
-- [ ] Entity Component System
+- [x] Entity Component System
 - [ ] Basic physics and collision detection
 - [ ] Audio playback (sound effects and music)
 - [ ] Scripting support
