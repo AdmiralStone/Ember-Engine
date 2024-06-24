@@ -1,37 +1,30 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Input.hpp"
+#include "Entity.hpp"
+#include "PositionComponent.hpp"
+#include "VelocityComponent.hpp"
+#include "MovementSystem.hpp"
 
 int main(){
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800,600), "Ember Engine");
 
-    /* Development Code START*/
+    // Create an entity manager
+    ember::EntityManager entityManager;
 
-    // Create a circle shape
-    sf::CircleShape circle(50); // Radius of 50
-    circle.setFillColor(sf::Color::Green);
-    circle.setPosition(350,250); // Position it in the middle of the window
+    // Create Movement system
+    ember::MovementSystem movementSystem;
 
+    // Create an entity and add components
+    ember::Entity player = entityManager.createEntity();
+    entityManager.addComponent(player,ember::PositionComponent{200,150});
+    entityManager.addComponent(player,ember::VelocityComponent{50,50});
 
-    /*********************************************/
-    // Load a Texture
-    sf::Texture texture;
-    if(!texture.loadFromFile("../assets/example.png")){
-        std::cerr<<"Error loading texture"<< std::endl;
-        return -1;
-    }
-
-    // Create a Sprite
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-    sprite.setPosition(200,150);
 
     // Set up the clock for time management
     sf::Clock clock;
-    float spriteSpeed = 200.0f; // Pixels per sec
-
-    /*********************************************/
+    // float spriteSpeed = 200.0f; // Pixels per sec
 
     /* Development Code END*/
 
@@ -53,33 +46,42 @@ int main(){
         }
 
         // Get the elapsed time
-        sf::Time deltaTime = clock.restart();
+        float deltaTime = clock.restart().asSeconds();
 
         // Move the sprite
-        float moveDistance = spriteSpeed * deltaTime.asSeconds();
-        if(input.isKeyPressed(sf::Keyboard::Right)){
-            sprite.move(moveDistance,0); // Move sprite right
-        }
-        if(input.isKeyPressed(sf::Keyboard::Left)){
-            sprite.move(-moveDistance,0); // Move sprite left
-        }
-        if(input.isKeyPressed(sf::Keyboard::Up)){
-            sprite.move(0,-moveDistance); // Move sprite up
-        }
-        if(input.isKeyPressed(sf::Keyboard::Down)){
-            sprite.move(0,moveDistance); // Move sprite down
-        }
+        // float moveDistance = spriteSpeed * deltaTime.asSeconds();
+        // if(input.isKeyPressed(sf::Keyboard::Right)){
+        //     sprite.move(moveDistance,0); // Move sprite right
+        // }
+        // if(input.isKeyPressed(sf::Keyboard::Left)){
+        //     sprite.move(-moveDistance,0); // Move sprite left
+        // }
+        // if(input.isKeyPressed(sf::Keyboard::Up)){
+        //     sprite.move(0,-moveDistance); // Move sprite up
+        // }
+        // if(input.isKeyPressed(sf::Keyboard::Down)){
+        //     sprite.move(0,moveDistance); // Move sprite down
+        // }
+
+        // Update the movement system
+        movementSystem.update(entityManager,deltaTime);
+
+        // Get the update position os the player
+        auto& position = entityManager.getComponent<ember::PositionComponent>(player);
 
         
 
         // Clear screen
         window.clear(sf::Color::White);
 
-        //  Draw the circle
-        // window.draw(circle);
-
         // Render the sprite
-        window.draw(sprite);
+        // window.draw(sprite);
+
+        // Draw the updated position of the player
+        sf::CircleShape playerShape(10);
+        playerShape.setFillColor(sf::Color::Green);
+        playerShape.setPosition(position.x,position.y);
+        window.draw(playerShape);
 
 
         // Update wthe window
