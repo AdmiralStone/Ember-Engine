@@ -1,90 +1,75 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Input.hpp"
-#include "Entity.hpp"
-#include "PositionComponent.hpp"
-#include "VelocityComponent.hpp"
-#include "MovementSystem.hpp"
+#include "core/Input.hpp"
+#include "core/Entity.hpp"
+#include "components/PositionComponent.hpp"
+#include "components/VelocityComponent.hpp"
+#include "physics/PhysicsComponent.hpp"
+#include "physics/CollisionComponent.hpp"
+#include "systems/MovementSystem.hpp"
+#include "physics/PhysicsSystem.hpp"
+#include "physics/CollisionSystem.hpp"
 
-int main(){
+int main() {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800,600), "Ember Engine");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Ember Engine");
 
     // Create an entity manager
     ember::EntityManager entityManager;
 
-    // Create Movement system
+    // Create the movement, physics, and collision systems
     ember::MovementSystem movementSystem;
+    ember::PhysicsSystem physicsSystem;
+    ember::CollisionSystem collisionSystem;
 
     // Create an entity and add components
     ember::Entity player = entityManager.createEntity();
-    entityManager.addComponent(player,ember::PositionComponent{200,150});
-    entityManager.addComponent(player,ember::VelocityComponent{50,50});
+    entityManager.addComponent(player, ember::PositionComponent{200, 150});
+    entityManager.addComponent(player, ember::VelocityComponent{50, 50}); // Velocity in pixels per second
+    entityManager.addComponent(player, ember::PhysicsComponent{10.0f, 1.5f}); // Mass and drag
+    entityManager.addComponent(player, ember::CollisionComponent{20, 20}); // Width and height for collision
 
+    // Initialize the Input handler
+    ember::Input input;
 
     // Set up the clock for time management
     sf::Clock clock;
-    // float spriteSpeed = 200.0f; // Pixels per sec
-
-    /* Development Code END*/
-
-    ember::Input input;
 
     // Start the game loop
-    while(window.isOpen()){
-        // Process Event
+    while (window.isOpen()) {
         sf::Event event;
-        while(window.pollEvent(event)){
-            //Update the input event
+        while (window.pollEvent(event)) {
             input.update(event);
 
-            // Close window : exit
-            if(event.type == sf::Event::Closed) window.close();
-
+            // Close window: exit
+            if (event.type == sf::Event::Closed)
+                window.close();
             // Close window when Escape key is pressed
-            if(input.isKeyPressed(sf::Keyboard::Escape))window.close();
+            if (input.isKeyPressed(sf::Keyboard::Escape))
+                window.close();
         }
 
         // Get the elapsed time
         float deltaTime = clock.restart().asSeconds();
 
-        // Move the sprite
-        // float moveDistance = spriteSpeed * deltaTime.asSeconds();
-        // if(input.isKeyPressed(sf::Keyboard::Right)){
-        //     sprite.move(moveDistance,0); // Move sprite right
-        // }
-        // if(input.isKeyPressed(sf::Keyboard::Left)){
-        //     sprite.move(-moveDistance,0); // Move sprite left
-        // }
-        // if(input.isKeyPressed(sf::Keyboard::Up)){
-        //     sprite.move(0,-moveDistance); // Move sprite up
-        // }
-        // if(input.isKeyPressed(sf::Keyboard::Down)){
-        //     sprite.move(0,moveDistance); // Move sprite down
-        // }
+        // Update systems
+        physicsSystem.update(entityManager, deltaTime);
+        collisionSystem.update(entityManager);
+        movementSystem.update(entityManager, deltaTime);
 
-        // Update the movement system
-        movementSystem.update(entityManager,deltaTime);
-
-        // Get the update position os the player
+        // Get the updated position of the player
         auto& position = entityManager.getComponent<ember::PositionComponent>(player);
 
-        
-
         // Clear screen
-        window.clear(sf::Color::White);
-
-        // Render the sprite
-        // window.draw(sprite);
+        window.clear();
 
         // Draw the updated position of the player
         sf::CircleShape playerShape(10);
         playerShape.setFillColor(sf::Color::Green);
-        playerShape.setPosition(position.x,position.y);
+        playerShape.setPosition(position.x, position.y);
         window.draw(playerShape);
 
-
-        // Update wthe window
+        // Update the window
         window.display();
     }
 
